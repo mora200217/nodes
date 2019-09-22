@@ -1,19 +1,29 @@
+// Arrays //<>// //<>//
+public PVector[] nodesPos;
+int [] nodesOrder; 
+int [][] incidentMat; 
 
+int gameWidth, gameHeight;
+int selectedNodeID; 
+int amountOfNodes;
+int actualNodeCount; // For Order assignment 
+boolean alreadyPlaying;
 
-
-boolean playGame() {
-  
-  print(nodesOrder); 
-  if (!alreadyPlaying) {
-    actualNodeCount = 1; 
-  amountOfNodes = 4;
+void gamePresets() {
+  actualNodeCount = 1; 
+  amountOfNodes = 3;
   nodesPos = new PVector[amountOfNodes]; // Positions array
   nodesOrder = new int[amountOfNodes];
   incidentMat = new int[amountOfNodes][amountOfNodes];
   gameWidth = width - 2 * MARGIN;
   gameHeight = height - 4 * MARGIN;
   selectedNodeID = -1;
-    alreadyPlaying = true;
+}
+// Main Game function 
+boolean playGame() {
+
+  if (!alreadyPlaying) {
+    gamePresets();
   }
   //println("In game!");
   boolean keepPlaying = true; 
@@ -70,7 +80,7 @@ void locatePositions() {
 void displayMap() {
   // load Map 
   // Later !
-  PVector mouse = new PVector(mouseX, mouseY);
+
   for (int node = 0; node < amountOfNodes; node++) {
     if (node > 0) {
       displayGuideLine(nodesPos[node - 1], nodesPos[node] );
@@ -78,16 +88,17 @@ void displayMap() {
     if (node == amountOfNodes - 1) {
       displayGuideLine(nodesPos[0], nodesPos[node] );
     }
-    // Mouse over any of the nodes  //<>//
+    // Mouse over any of the nodes 
+    PVector mouse = new PVector(mouseX, mouseY);
     if (mouse.sub(nodesPos[node]).mag() <= NODE_RAD) {
       if (mousePressed) {
-        // First node to select
+        // First node to select //<>//
         if (selectedNodeID == -1) {
           println("Selected Node!");
-          selectedNodeID = node; //<>//
+          selectedNodeID = node;
         }
         // Other nodes selected
-        if (selectedNodeID != node) {
+        if (selectedNodeID != node && validateNode(node)) {
           println("Selected Node :V!");
           incidentMat[selectedNodeID][node] = 1; 
           selectedNodeID = node;

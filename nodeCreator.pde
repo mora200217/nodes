@@ -9,9 +9,12 @@ void displayNode(PVector pos, int nodeID) { //<>//
   text(nodeID, pos.x, pos.y);
 }
 
-void connectNode() {
-}
+boolean validateNode(int node) {
+  for (int i = 0; i < amountOfNodes; i++) {
+    if (incidentMat[i][node] == 1 || incidentMat[node][i] == 1) {
+      return false;
+    }
+  }
 
-boolean validateNode() {
   return true;
 }
